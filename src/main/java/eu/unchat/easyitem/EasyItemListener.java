@@ -6,6 +6,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
+import cn.nukkit.event.inventory.InventoryClickEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
@@ -58,6 +59,16 @@ public final class EasyItemListener implements Listener {
         }
 
         handleEvent(event, item, (t, e) -> t.onBreak(event.getPlayer(), e));
+    }
+
+    @EventHandler
+    public void onClick(final InventoryClickEvent event) {
+        Item item = event.getSourceItem();
+        if (item == null) {
+            return;
+        }
+
+        handleEvent(event, item, (t, e) -> t.onClick(event.getPlayer(), e));
     }
 
     private <T extends Event> void handleEvent(final T event, final Item baseItem, final BiConsumer<EasyItemProvider, T> action) {
