@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'co.uzzu.dotenv.gradle' version "4.0.0"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2")
+    }
+
+    maven {
+        url = uri("https://jitpack.io")
+    }
+
+    maven {
+        url = uri("https://repo.opencollab.dev/maven-releases/")
+    }
+
+    maven {
+        url = uri("https://repo.opencollab.dev/maven-snapshots/")
+    }
+}
+
+dependencies {
+    compileOnly 'com.github.PowerNukkitX:PowerNukkitX:master-SNAPSHOT'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GithubPackages"
+            url = uri("https://maven.pkg.github.com/UnChatWTF/EasyItem")
+            credentials {
+                username = env.GH_USERNAME.value
+                password = env.GH_TOKEN.value
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            groupId = 'eu.unchat.easylibs'
+            artifactId = 'easy-item'
+            version = '1.0.0'
+
+            from components.java
+        }
+    }
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
